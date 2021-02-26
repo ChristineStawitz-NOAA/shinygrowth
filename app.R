@@ -18,6 +18,12 @@ ui <- fluidPage(
     # Sidebar with slider inputs for parameter values
     sidebarLayout(
         sidebarPanel(
+            sliderInput("k",
+                        "k:",
+                        min=0.01,
+                        max=0.8,
+                        value=.14,
+                        step=.05),
             sliderInput("L1",
                         "L1 (cm):",
                         min=1,
@@ -81,13 +87,13 @@ server <- function(input, output) {
             return(mat)
         }
         
-        meanL <- getLengths(input$L_inf, input$L1, k, ages)
+        meanL <- getLengths(input$L_inf, input$L1, input$k, ages)
         ddL <- getLengths(input$L_inf-input$g*input$meanB,
                           input$L1,
-                          k,
+                          input$k,
                           ages)
         envLinked <- getLengths(input$L_inf-input$L_inf*.019*input$degC, input$L1, 
-                                k=k+k*0.043*input$degC,
+                                k=input$k+input$k*0.043*input$degC,
                                 ages)
 
         # draw the length curve
